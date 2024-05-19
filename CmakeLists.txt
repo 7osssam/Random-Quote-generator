@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.25)
+
+# set the project name
+project(RandomQuoteGenerator)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+
+# set compiler flags
+set(CMAKE_CXX_FLAGS "-Wall -static-libstdc++")
+
+
+# include directories
+include_directories(${PROJECT_SOURCE_DIR}/inc)
+
+# add the executable
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
+add_executable(RandomQuoteGenerator ${SOURCES})
+
+# add compiler flags
+add_compile_options(-Wall -static-libstdc++)
