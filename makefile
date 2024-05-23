@@ -5,6 +5,8 @@ COLOR_GREEN=\033[32m
 COLOR_YELLOW=\033[33m
 COLOR_RESET=\033[0m
 
+PROJECT_NAME=RandomQuoteGenerator
+
 build:
 	@echo -e "$(COLOR_YELLOW)======== Building the project... ========$(COLOR_RESET)"
 	mkdir -p build 
@@ -18,7 +20,7 @@ run:
 		exit 1; \
 	fi
 	@echo -e "$(COLOR_GREEN)======== Running the project... ========$(COLOR_RESET)"
-	cd build/ && ./RandomQuoteGenerator
+	cd build/ && ./PROJECT_NAME
 
 clean:
 	@echo -e "$(COLOR_RED)======== Cleaning the build directory... ========$(COLOR_RESET)"
