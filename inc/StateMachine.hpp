@@ -1,85 +1,116 @@
 #ifndef __STATEMACHINE_H__
 #define __STATEMACHINE_H__
 
-
 #include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
-
-//bool HandleInput(int &input)
-//{
-//    std::cout << "what do you want to do?" << std::endl;
-//    std::cout << "1. Get a quote" << std::endl;
-//    std::cout << "2. Exit" << std::endl;
-//    std::cout << "3. Get History" << std::endl;
-//    std::cout << "4. Backup" << std::endl;
-//    std::cout << "5. Restore" << std::endl;
-//    std::cin >> input;
-
-//    if (input >= 1 && input <= 5)
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
+#include "Backup.hpp"
+#include "CSVManager.hpp"
+#include "QuoteManager.hpp"
 
 
-/**
- * @brief The State class represents a state in the state machine.
- */
+// Abstract base class for states
 class State
 {
 public:
-    /**
-	 * @brief Virtual destructor for the State class.
-	 */
     virtual ~State() = default;
-
-    /**
-	 * @brief Pure virtual method to execute the state's behavior.
-	 */
     virtual void execute() = 0;
 };
 
-/**
- * @brief The StateMachine class represents a simple state machine.
- */
+// Enum for representing different states
+enum class StateType
+{
+    GetQuote,
+    Exit,
+    GetHistory,
+    Backup,
+    Restore
+};
+
+// State machine class to manage states
 class StateMachine
 {
 private:
-    std::shared_ptr<State> currentState_; /**< The current state of the state machine. */
+    std::shared_ptr<State> currentState_;
 
 public:
-    /**
-	 * @brief Constructor for the StateMachine class.
-	 * @param initialState The initial state of the state machine.
-	 */
     StateMachine(std::shared_ptr<State> initialState) : currentState_(initialState)
     {
     }
 
-    /**
-	 * @brief Sets the current state of the state machine.
-	 * @param state The new state to set.
-	 */
-    void setState(std::shared_ptr<State> state)
-    {
-        currentState_ = state;
-    }
+    void setState(std::shared_ptr<State> state);
 
-    /**
-	 * @brief Executes the current state's behavior.
-	 */
-    void run()
-    {
-        currentState_->execute();
-    }
+    void run();
 };
 
+// Concrete state classes
+class GetQuoteState : public State
+{
+private:
+    std::string line{};
+    std::string quote{};
+    std::string emotion{};
+    QuoteManager &quoteManager_;
+    WordDetector &wordDetector_;
+
+
+public:
+    GetQuoteState()
+        : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance())),
+          wordDetector_(WordDetector::getInstance(CSVManager::getInstance()))
+    {
+    }
+
+    void execute() override;
+};
+
+class GetHistoryState : public State
+{
+private:
+    QuoteManager &quoteManager_;
+
+public:
+    GetHistoryState() : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance()))
+    {
+    }
+
+    void execute() override;
+};
+
+class BackupState : public State
+{
+private:
+    Caretaker caretaker;
+    QuoteManager &quoteManager_;
+
+public:
+    BackupState() : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance()))
+    {
+    }
+
+    void execute() override;
+};
+
+class RestoreState : public State
+{
+private:
+    Caretaker caretaker;
+    QuoteManager &quoteManager_;
+
+public:
+    RestoreState() : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance()))
+    {
+    }
+
+    void execute() override;
+};
+
+class ExitState : public State
+{
+public:
+    void execute() override;
+};
 
 #endif // __STATEMACHINE_H__
