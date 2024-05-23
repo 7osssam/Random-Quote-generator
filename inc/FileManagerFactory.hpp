@@ -3,7 +3,7 @@
 
 #include "CSVManager.hpp"
 #include "FileManager.hpp"
-#include "TextFileManager.hpp"
+#include "TextManager.hpp"
 #include <stdexcept>
 
 /**

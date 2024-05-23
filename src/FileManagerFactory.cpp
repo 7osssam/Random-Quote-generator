@@ -8,7 +8,7 @@ FileManager *FileManagerFactory::createFileManager(FileType type)
     case FileType::CSV:
         return &CSVManager::getInstance();
     case FileType::Text:
-        return &TextFileManager::getInstance();
+        return &TextManager::getInstance();
     default:
         throw std::invalid_argument("Unknown file type");
     }
