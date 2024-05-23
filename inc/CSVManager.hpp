@@ -42,13 +42,6 @@ public:
 class CSVManager : public FileManager
 {
 private:
-    /**
-	 * @brief Private constructor to enforce singleton pattern.
-	 */
-    CSVManager() : parseStrategy_(std::make_unique<CSVParseStrategy>())
-    {
-    }
-
     CSVManager(const CSVManager &) = delete;
     CSVManager &operator=(const CSVManager &) = delete;
 
@@ -58,6 +51,12 @@ private:
     std::mutex mutex_;                             /**< Mutex for thread safety. */
     std::string filename_;                         /**< The filename of the CSV file. */
 
+    /**
+	 * @brief Private constructor to enforce singleton pattern.
+	 */
+    CSVManager() : parseStrategy_(std::make_unique<CSVParseStrategy>())
+    {
+    }
 
 public:
     /**
