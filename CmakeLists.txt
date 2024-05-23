@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD 17)
 # set compiler flags
 set(CMAKE_CXX_FLAGS "-Wall -static-libstdc++")
 
-
 # include directories
 include_directories(${PROJECT_SOURCE_DIR}/inc)
 
@@ -19,3 +18,20 @@ add_executable(RandomQuoteGenerator ${SOURCES})
 
 # add compiler flags
 add_compile_options(-Wall -static-libstdc++)
+
+# Set the path to OpenSSL installation
+set(OPENSSL_ROOT_DIR "${PROJECT_SOURCE_DIR}/lib/OpenSSL/3.3.0")
+
+# Manually set the include and library directories
+set(OPENSSL_INCLUDE_DIR "${OPENSSL_ROOT_DIR}/include")
+set(OPENSSL_CRYPTO_LIBRARY "${OPENSSL_ROOT_DIR}/lib/libcrypto.lib")
+set(OPENSSL_SSL_LIBRARY "${OPENSSL_ROOT_DIR}/lib/libssl.lib")
+
+# Find OpenSSL
+find_package(OpenSSL REQUIRED)
+
+# Include OpenSSL directories
+include_directories(${OPENSSL_INCLUDE_DIR})
+
+# Link OpenSSL libraries
+target_link_libraries(RandomQuoteGenerator ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY})
