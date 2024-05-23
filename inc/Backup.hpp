@@ -4,7 +4,7 @@
 
 #include "FilesManager.hpp"
 #include "QuoteManager.hpp"
-#include "TextFileManager.hpp"
+#include "TextManager.hpp"
 #include "init.hpp"
 #include <memory>
 #include <vector>
@@ -46,7 +46,7 @@ public:
         filesManager.setData(FileManagerFactory::FileType::Text, BACKUP_FILE, "history", quoteManager.getHistory());
 
 
-        // using TextFileManager
+        // using TextManager
         filesManager.saveFile(FileManagerFactory::FileType::Text, BACKUP_FILE);
 
         return true;
