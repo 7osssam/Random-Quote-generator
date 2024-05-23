@@ -12,11 +12,22 @@ class QuoteManager
 private:
     CSVManager &csvManager_;
     std::vector<std::string> history_;
-
-public:
     QuoteManager(CSVManager &csvManager) : csvManager_(csvManager)
     {
     }
+
+    QuoteManager(const QuoteManager &) = delete;
+    QuoteManager &operator=(const QuoteManager &) = delete;
+
+
+public:
+    // create singleton
+    static QuoteManager &getInstance(CSVManager &csvManager)
+    {
+        static QuoteManager instance(csvManager);
+        return instance;
+    }
+
 
     std::string getRandomQuote(const std::string &filename, const std::string &emotion)
     {
@@ -50,6 +61,12 @@ class WordDetector
 {
 private:
     CSVManager &csvManager_;
+    WordDetector(CSVManager &csvManager) : csvManager_(csvManager)
+    {
+    }
+
+    WordDetector(const WordDetector &) = delete;
+    WordDetector &operator=(const WordDetector &) = delete;
 
     std::vector<std::string> split(const std::string &s, char delimiter)
     {
@@ -70,9 +87,13 @@ private:
     }
 
 public:
-    WordDetector(CSVManager &csvManager) : csvManager_(csvManager)
+    // create singleton
+    static WordDetector &getInstance(CSVManager &csvManager)
     {
+        static WordDetector instance(csvManager);
+        return instance;
     }
+
 
     bool containsWord(const std::string &filename, const std::string &emotion, const std::string &line)
     {
