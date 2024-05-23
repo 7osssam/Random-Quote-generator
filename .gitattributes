@@ -9,3 +9,7 @@
 *.h text
 *.hxx text
 *.hpp text
+
+# Declare files that are truly binary and should not be modified.
+*.hpp linguist-language=C++
+*.cpp linguist-language=C++
