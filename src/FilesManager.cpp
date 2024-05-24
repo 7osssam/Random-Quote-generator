@@ -1,37 +1,37 @@
 #include "../inc/FilesManager.hpp"
 
-
-bool FilesManager::loadFile(FileManagerFactory::FileType type, const std::string &filename) const
+FilesManager::FilesManager(FileManagerFactory::FileType type) :
+	manager_(FileManagerFactory::createFileManager(type))
 {
-    FileManager *manager = FileManagerFactory::createFileManager(type);
-    return manager->loadFile(filename);
 }
 
-std::vector<std::string> FilesManager::getData(FileManagerFactory::FileType type,
-                                               const std::string &filename,
-                                               const std::string &key) const
+bool FilesManager::loadFile(const std::string& filename) const
 {
-    FileManager *manager = FileManagerFactory::createFileManager(type);
-    return manager->getData(filename, key);
+	return manager_->loadFile(filename);
 }
 
-void FilesManager::setData(FileManagerFactory::FileType type,
-                           const std::string &filename,
-                           const std::string &key,
-                           const std::vector<std::string> &data) const
+std::vector<std::string> FilesManager::getData(const std::string& filename, const std::string& key) const
 {
-    FileManager *manager = FileManagerFactory::createFileManager(type);
-    manager->setData(filename, key, data);
+	return manager_->getData(filename, key);
 }
 
-bool FilesManager::resetData(FileManagerFactory::FileType type, const std::string &filename) const
+void FilesManager::setData(const std::string& filename, const std::string& key,
+						   const std::vector<std::string>& data) const
 {
-    FileManager *manager = FileManagerFactory::createFileManager(type);
-    return manager->resetData(filename);
+	manager_->setData(filename, key, data);
 }
 
-bool FilesManager::saveFile(FileManagerFactory::FileType type, const std::string &filename) const
+bool FilesManager::resetData(const std::string& filename) const
 {
-    FileManager *manager = FileManagerFactory::createFileManager(type);
-    return manager->saveFile(filename);
+	return manager_->resetData(filename);
+}
+
+bool FilesManager::saveFile(const std::string& filename) const
+{
+	return manager_->saveFile(filename);
+}
+
+FilesManager::~FilesManager()
+{
+	// Do not delete manager_ as it is a singleton instance managed elsewhere
 }
