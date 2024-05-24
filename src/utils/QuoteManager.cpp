@@ -1,4 +1,4 @@
-#include "../inc/QuoteManager.hpp"
+#include "QuoteManager.hpp"
 
 QuoteManager::QuoteManager() : filesManager_{FileManagerFactory::FileType::CSV}
 {
