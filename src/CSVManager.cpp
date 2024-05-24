@@ -1,5 +1,22 @@
 #include "../inc/CSVManager.hpp"
 
+std::vector<std::string> CSVParseStrategy::parse(const std::string& line)
+{
+	std::vector<std::string> result;
+	std::string				 cell;
+	std::istringstream		 lineStream(line);
+
+	while (std::getline(lineStream, cell, ','))
+	{
+		result.push_back(cell);
+	}
+	return result;
+}
+
+CSVManager::CSVManager() : parseStrategy_(std::make_unique<CSVParseStrategy>())
+{
+}
+
 CSVManager& CSVManager::getInstance(void)
 {
 	static CSVManager instance;
