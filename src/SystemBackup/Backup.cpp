@@ -1,4 +1,4 @@
-#include "../inc/Backup.hpp"
+#include "Backup.hpp"
 
 #define BACKUP_FILE "../data/backup.txt"
 
