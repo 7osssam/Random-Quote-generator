@@ -4,7 +4,6 @@
 #include "CSVManager.hpp"
 #include "FileManager.hpp"
 #include "TextManager.hpp"
-#include <stdexcept>
 
 /**
  * @brief The FileManagerFactory class is responsible for creating instances of FileManager based on the specified FileType.
@@ -20,7 +19,7 @@ public:
 	{
 		CSV,  /**< Comma-Separated Values file type */
 		Text, /**< Text file type */
-		// TODO: JSON
+			  // TODO: JSON
 	};
 
 	/**
