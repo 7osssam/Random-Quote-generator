@@ -12,6 +12,10 @@ set(CMAKE_CXX_FLAGS "-Wall -static-libstdc++")
 # include directories
 include_directories(${PROJECT_SOURCE_DIR}/inc)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # Generate compile_commands.json
+
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+
 # add the executable
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_executable(RandomQuoteGenerator ${SOURCES})
