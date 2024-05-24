@@ -1,4 +1,4 @@
-#include "../inc/WordDetector.hpp"
+#include "WordDetector.hpp"
 
 WordDetector::WordDetector() : filesManager_{FileManagerFactory::FileType::CSV}
 {
