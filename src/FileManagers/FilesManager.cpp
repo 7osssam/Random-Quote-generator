@@ -1,4 +1,4 @@
-#include "../inc/FilesManager.hpp"
+#include "FilesManager.hpp"
 
 FilesManager::FilesManager(FileManagerFactory::FileType type) :
 	manager_(FileManagerFactory::createFileManager(type))
