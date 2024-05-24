@@ -1,0 +1,78 @@
+@startuml
+title This Diagram shows the relationship between State Machine components
+package [inc] as C_0000392941554902932752 {
+package [State] as C_0001984235325359594158 {
+abstract "State" as C_0001568504200021205102
+abstract C_0001568504200021205102 {
++~State() = default : void
+..
+{abstract} +execute() = 0 : void
+__
+}
+class "StateMachine" as C_0000809888631143004801
+class C_0000809888631143004801 {
++StateMachine(std::shared_ptr<State> initialState) : void
+..
++run() : void
++setState(std::shared_ptr<State> state) : void
+__
+-currentState_ : std::shared_ptr<State>
+}
+enum "StateMachine::StateType" as C_0000165730520787133096
+enum C_0000165730520787133096 {
+GetQuote
+Exit
+GetHistory
+Backup
+Restore
+}
+class "GetQuoteState" as C_0000767830389004106606
+class C_0000767830389004106606 {
++GetQuoteState() : void
+..
++execute() : void
+__
+-emotion : std::string
+-line : std::string
+-quote : std::string
+-quoteManager_ : QuoteManager &
+-wordDetector_ : WordDetector &
+}
+class "GetHistoryState" as C_0000227976704647291789
+class C_0000227976704647291789 {
++GetHistoryState() : void
+..
++execute() : void
+__
+-quoteManager_ : QuoteManager &
+}
+class "BackupState" as C_0000241620399623565482
+class C_0000241620399623565482 {
++execute() : void
+__
+-caretaker : Caretaker
+}
+class "RestoreState" as C_0001109299336978540532
+class C_0001109299336978540532 {
++execute() : void
+__
+-caretaker : Caretaker
+}
+class "ExitState" as C_0000701703073963245770
+class C_0000701703073963245770 {
++execute() : void
+__
+}
+}
+}
+C_0000809888631143004801 --> C_0001568504200021205102 : -currentState_
+C_0000165730520787133096 --+ C_0000809888631143004801
+C_0001568504200021205102 <|-- C_0000767830389004106606
+C_0001568504200021205102 <|-- C_0000227976704647291789
+C_0001568504200021205102 <|-- C_0000241620399623565482
+C_0001568504200021205102 <|-- C_0001109299336978540532
+C_0001568504200021205102 <|-- C_0000701703073963245770
+
+'Generated with clang-uml, version 0.5.2
+'LLVM version clang version 18.1.1 (https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a)
+@enduml

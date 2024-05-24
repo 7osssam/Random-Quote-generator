@@ -1,0 +1,48 @@
+@startuml
+title This Diagram shows the relationship between System Backup Machine components
+package [inc] as C_0000392941554902932752 {
+package [utils] as C_0002155265323244072197 {
+class "QuoteManager" as C_0002087532763571426051
+class C_0002087532763571426051 {
+-QuoteManager() : void
+-QuoteManager(const QuoteManager &) = deleted : void
+..
+-operator=(const QuoteManager &) = deleted : QuoteManager &
+..
++getHistory() const : std::vector<std::string>
+{static} +getInstance() : QuoteManager &
++getRandomQuote(const std::string & emotion) : std::string
++setHistory(const std::vector<std::string> & history) : void
+__
+-filesManager_ : FilesManager
+-history_ : std::vector<std::string>
+}
+}
+package [SystemBackup] as C_0001136592463276690933 {
+class "Memento" as C_0001705914021101036153
+class C_0001705914021101036153 {
++Memento(const std::vector<std::string> & history) : void
+..
++getHistory() const : std::vector<std::string>
+__
+-history_ : std::vector<std::string>
+}
+class "Caretaker" as C_0001841076516654256738
+class C_0001841076516654256738 {
++Caretaker() : void
+..
++backup() : bool
++restore() : bool
+__
+-filesManager_ : FilesManager
+-memento_ : std::unique_ptr<Memento>
+-quoteManager_ : QuoteManager &
+}
+}
+}
+C_0001841076516654256738 o-- C_0001705914021101036153 : -memento_
+C_0001841076516654256738 --> C_0002087532763571426051 : -quoteManager_
+
+'Generated with clang-uml, version 0.5.2
+'LLVM version clang version 18.1.1 (https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a)
+@enduml

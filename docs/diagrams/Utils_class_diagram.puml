@@ -1,0 +1,38 @@
+@startuml
+title This Diagram shows the relationship between Utils components
+package [inc] as C_0000392941554902932752 {
+package [utils] as C_0002155265323244072197 {
+class "WordDetector" as C_0001438220128157988994
+class C_0001438220128157988994 {
+-WordDetector() : void
+-WordDetector(const WordDetector &) = deleted : void
+..
+-operator=(const WordDetector &) = deleted : WordDetector &
+..
++containsWord(const std::string & emotion, const std::string & line) : bool
+{static} +getInstance() : WordDetector &
+-split(const std::string & s, char delimiter) : std::vector<std::string>
+__
+-filesManager_ : FilesManager
+}
+class "QuoteManager" as C_0002087532763571426051
+class C_0002087532763571426051 {
+-QuoteManager() : void
+-QuoteManager(const QuoteManager &) = deleted : void
+..
+-operator=(const QuoteManager &) = deleted : QuoteManager &
+..
++getHistory() const : std::vector<std::string>
+{static} +getInstance() : QuoteManager &
++getRandomQuote(const std::string & emotion) : std::string
++setHistory(const std::vector<std::string> & history) : void
+__
+-filesManager_ : FilesManager
+-history_ : std::vector<std::string>
+}
+}
+}
+
+'Generated with clang-uml, version 0.5.2
+'LLVM version clang version 18.1.1 (https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a)
+@enduml

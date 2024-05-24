@@ -1,0 +1,108 @@
+@startuml
+title This Diagram shows the relationship between FileManagers components
+package [inc] as C_0000392941554902932752 {
+package [FileManagers] as C_0001111627525490536684 {
+abstract "ParseStrategy" as C_0000106775899698471070
+abstract C_0000106775899698471070 {
++~ParseStrategy() = default : void
+..
+{abstract} +parse(const std::string & line) = 0 : std::vector<std::string>
+__
+}
+abstract "FileManager" as C_0001762709798774898242
+abstract C_0001762709798774898242 {
++~FileManager() = default : void
+..
+{abstract} +getData(const std::string & filename, const std::string & key) = 0 : std::vector<std::string>
+{abstract} +loadFile(const std::string & filename) = 0 : bool
+{abstract} +resetData(const std::string & filename) = 0 : bool
+{abstract} +saveFile(const std::string & filename) const = 0 : bool
+{abstract} +setData(const std::string & filename, const std::string & key, const std::vector<std::string> & data) = 0 : void
+__
+}
+class "CSVParseStrategy" as C_0000985390514549420001
+class C_0000985390514549420001 {
++parse(const std::string & line) : std::vector<std::string>
+__
+}
+class "CSVManager" as C_0000209334664465276570
+class C_0000209334664465276570 {
+-CSVManager(const CSVManager &) = deleted : void
+-CSVManager() : void
+..
+-operator=(const CSVManager &) = deleted : CSVManager &
+..
++getData(const std::string & filename, const std::string & column) : std::vector<std::string>
+{static} +getInstance() : CSVManager &
++loadFile(const std::string & filename) : bool
++resetData(const std::string & filename) : bool
++saveFile(const std::string & filename) const : bool
++setData(const std::string & filename, const std::string & column, const std::vector<std::string> & data) : void
+__
+-data_ : std::map<std::string,std::map<std::string,std::vector<std::string>>>
+-filename_ : std::string
+-mutex_ : std::mutex
+-parseStrategy_ : std::unique_ptr<ParseStrategy>
+}
+class "TextParseStrategy" as C_0001366781052303509844
+class C_0001366781052303509844 {
++parse(const std::string & line) : std::vector<std::string>
+__
+}
+class "TextManager" as C_0000941663537070951489
+class C_0000941663537070951489 {
+-TextManager() : void
+-TextManager(const TextManager &) = deleted : void
+..
+-operator=(const TextManager &) = deleted : TextManager &
+..
++getData(const std::string & filename, const std::string & key) : std::vector<std::string>
+{static} +getInstance() : TextManager &
++loadFile(const std::string & filename) : bool
++resetData(const std::string & filename) : bool
++saveFile(const std::string & filename) const : bool
++setData(const std::string & filename, const std::string & key, const std::vector<std::string> & data) : void
+__
+-data_ : std::map<std::string,std::vector<std::string>>
+-filename_ : std::string
+-mutex_ : std::mutex
+-parseStrategy_ : std::unique_ptr<ParseStrategy>
+}
+class "FileManagerFactory" as C_0000362978639096402652
+class C_0000362978639096402652 {
+{static} +createFileManager(FileType type) : FileManager *
+__
+}
+enum "FileManagerFactory::FileType" as C_0001739866015142771395
+enum C_0001739866015142771395 {
+CSV
+Text
+}
+class "FilesManager" as C_0000951998978134492581
+class C_0000951998978134492581 {
++FilesManager(FileManagerFactory::FileType type) : void
++~FilesManager() : void
+..
++getData(const std::string & filename, const std::string & key) const : std::vector<std::string>
++loadFile(const std::string & filename) const : bool
++resetData(const std::string & filename) const : bool
++saveFile(const std::string & filename) const : bool
++setData(const std::string & filename, const std::string & key, const std::vector<std::string> & data) const : void
+__
+-manager_ : FileManager *
+}
+}
+}
+C_0000106775899698471070 <|-- C_0000985390514549420001
+C_0000209334664465276570 o-- C_0000106775899698471070 : -parseStrategy_
+C_0001762709798774898242 <|-- C_0000209334664465276570
+C_0000106775899698471070 <|-- C_0001366781052303509844
+C_0000941663537070951489 o-- C_0000106775899698471070 : -parseStrategy_
+C_0001762709798774898242 <|-- C_0000941663537070951489
+C_0000362978639096402652 ..> C_0001762709798774898242
+C_0001739866015142771395 --+ C_0000362978639096402652
+C_0000951998978134492581 --> C_0001762709798774898242 : -manager_
+
+'Generated with clang-uml, version 0.5.2
+'LLVM version clang version 18.1.1 (https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a)
+@enduml

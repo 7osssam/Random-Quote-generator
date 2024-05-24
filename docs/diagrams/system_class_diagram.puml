@@ -1,0 +1,331 @@
+@startuml
+title This Diagram shows the relationship between all system components
+package [inc] as C_0000392941554902932752 {
+package [FileManagers] as C_0001111627525490536684 {
+abstract "ParseStrategy" as C_0000106775899698471070
+abstract C_0000106775899698471070 [[classParseStrategy.html{ParseStrategy}]] {
++~ParseStrategy() = default : void [[[{~ParseStrategy}]]]
+..
+{abstract} +parse(const std::string & line) = 0 : std::vector<std::string> [[[{parse}]]]
+__
+}
+abstract "FileManager" as C_0001762709798774898242
+abstract C_0001762709798774898242 [[classFileManager.html{FileManager}]] {
++~FileManager() = default : void [[[{~FileManager}]]]
+..
+{abstract} +getData(const std::string & filename, const std::string & key) = 0 : std::vector<std::string> [[[{getData}]]]
+{abstract} +loadFile(const std::string & filename) = 0 : bool [[[{loadFile}]]]
+{abstract} +resetData(const std::string & filename) = 0 : bool [[[{resetData}]]]
+{abstract} +saveFile(const std::string & filename) const = 0 : bool [[[{saveFile}]]]
+{abstract} +setData(const std::string & filename, const std::string & key, const std::vector<std::string> & data) = 0 : void [[[{setData}]]]
+__
+}
+class "CSVParseStrategy" as C_0000985390514549420001
+class C_0000985390514549420001 [[classCSVParseStrategy.html{CSVParseStrategy}]] {
++parse(const std::string & line) : std::vector<std::string> [[[{parse}]]]
+__
+}
+class "CSVManager" as C_0000209334664465276570
+class C_0000209334664465276570 [[classCSVManager.html{CSVManager}]] {
+-CSVManager(const CSVManager &) = deleted : void [[[{CSVManager}]]]
+-CSVManager() : void [[[{CSVManager}]]]
+..
+-operator=(const CSVManager &) = deleted : CSVManager & [[[{operator=}]]]
+..
++getData(const std::string & filename, const std::string & column) : std::vector<std::string> [[[{getData}]]]
+{static} +getInstance() : CSVManager & [[[{getInstance}]]]
++loadFile(const std::string & filename) : bool [[[{loadFile}]]]
++resetData(const std::string & filename) : bool [[[{resetData}]]]
++saveFile(const std::string & filename) const : bool [[[{saveFile}]]]
++setData(const std::string & filename, const std::string & column, const std::vector<std::string> & data) : void [[[{setData}]]]
+__
+-data_ : std::map<std::string,std::map<std::string,std::vector<std::string>>> [[[{data_}]]]
+-filename_ : std::string [[[{filename_}]]]
+-mutex_ : std::mutex [[[{mutex_}]]]
+-parseStrategy_ : std::unique_ptr<ParseStrategy> [[[{parseStrategy_}]]]
+}
+class "TextParseStrategy" as C_0001366781052303509844
+class C_0001366781052303509844 [[classTextParseStrategy.html{TextParseStrategy}]] {
++parse(const std::string & line) : std::vector<std::string> [[[{parse}]]]
+__
+}
+class "TextManager" as C_0000941663537070951489
+class C_0000941663537070951489 [[classTextManager.html{TextManager}]] {
+-TextManager() : void [[[{TextManager}]]]
+-TextManager(const TextManager &) = deleted : void [[[{TextManager}]]]
+..
+-operator=(const TextManager &) = deleted : TextManager & [[[{operator=}]]]
+..
++getData(const std::string & filename, const std::string & key) : std::vector<std::string> [[[{getData}]]]
+{static} +getInstance() : TextManager & [[[{getInstance}]]]
++loadFile(const std::string & filename) : bool [[[{loadFile}]]]
++resetData(const std::string & filename) : bool [[[{resetData}]]]
++saveFile(const std::string & filename) const : bool [[[{saveFile}]]]
++setData(const std::string & filename, const std::string & key, const std::vector<std::string> & data) : void [[[{setData}]]]
+__
+-data_ : std::map<std::string,std::vector<std::string>> [[[{data_}]]]
+-filename_ : std::string [[[{filename_}]]]
+-mutex_ : std::mutex [[[{mutex_}]]]
+-parseStrategy_ : std::unique_ptr<ParseStrategy> [[[{parseStrategy_}]]]
+}
+class "FileManagerFactory" as C_0000362978639096402652
+class C_0000362978639096402652 [[classFileManagerFactory.html{FileManagerFactory}]] {
+{static} +createFileManager(FileType type) : FileManager * [[[{createFileManager}]]]
+__
+}
+enum "FileManagerFactory::FileType" as C_0001739866015142771395
+enum C_0001739866015142771395 [[enumFileManagerFactory##FileType.html{FileManagerFactory##FileType}]] {
+CSV
+Text
+}
+class "FilesManager" as C_0000951998978134492581
+class C_0000951998978134492581 [[classFilesManager.html{FilesManager}]] {
++FilesManager(FileManagerFactory::FileType type) : void [[[{FilesManager}]]]
++~FilesManager() : void [[[{~FilesManager}]]]
+..
++getData(const std::string & filename, const std::string & key) const : std::vector<std::string> [[[{getData}]]]
++loadFile(const std::string & filename) const : bool [[[{loadFile}]]]
++resetData(const std::string & filename) const : bool [[[{resetData}]]]
++saveFile(const std::string & filename) const : bool [[[{saveFile}]]]
++setData(const std::string & filename, const std::string & key, const std::vector<std::string> & data) const : void [[[{setData}]]]
+__
+-manager_ : FileManager * [[[{manager_}]]]
+}
+}
+package [utils] as C_0002155265323244072197 {
+class "QuoteManager" as C_0002087532763571426051
+class C_0002087532763571426051 [[classQuoteManager.html{QuoteManager}]] {
+-QuoteManager() : void [[[{QuoteManager}]]]
+-QuoteManager(const QuoteManager &) = deleted : void [[[{QuoteManager}]]]
+..
+-operator=(const QuoteManager &) = deleted : QuoteManager & [[[{operator=}]]]
+..
++getHistory() const : std::vector<std::string> [[[{getHistory}]]]
+{static} +getInstance() : QuoteManager & [[[{getInstance}]]]
++getRandomQuote(const std::string & emotion) : std::string [[[{getRandomQuote}]]]
++setHistory(const std::vector<std::string> & history) : void [[[{setHistory}]]]
+__
+-filesManager_ : FilesManager [[[{filesManager_}]]]
+-history_ : std::vector<std::string> [[[{history_}]]]
+}
+class "WordDetector" as C_0001438220128157988994
+class C_0001438220128157988994 [[classWordDetector.html{WordDetector}]] {
+-WordDetector() : void [[[{WordDetector}]]]
+-WordDetector(const WordDetector &) = deleted : void [[[{WordDetector}]]]
+..
+-operator=(const WordDetector &) = deleted : WordDetector & [[[{operator=}]]]
+..
++containsWord(const std::string & emotion, const std::string & line) : bool [[[{containsWord}]]]
+{static} +getInstance() : WordDetector & [[[{getInstance}]]]
+-split(const std::string & s, char delimiter) : std::vector<std::string> [[[{split}]]]
+__
+-filesManager_ : FilesManager [[[{filesManager_}]]]
+}
+}
+package [SystemBackup] as C_0001136592463276690933 {
+class "Memento" as C_0001705914021101036153
+class C_0001705914021101036153 [[classMemento.html{Memento}]] {
++Memento(const std::vector<std::string> & history) : void [[[{Memento}]]]
+..
++getHistory() const : std::vector<std::string> [[[{getHistory}]]]
+__
+-history_ : std::vector<std::string> [[[{history_}]]]
+}
+class "Caretaker" as C_0001841076516654256738
+class C_0001841076516654256738 [[classCaretaker.html{Caretaker}]] {
++Caretaker() : void [[[{Caretaker}]]]
+..
++backup() : bool [[[{backup}]]]
++restore() : bool [[[{restore}]]]
+__
+-filesManager_ : FilesManager [[[{filesManager_}]]]
+-memento_ : std::unique_ptr<Memento> [[[{memento_}]]]
+-quoteManager_ : QuoteManager & [[[{quoteManager_}]]]
+}
+}
+package [State] as C_0001984235325359594158 {
+abstract "State" as C_0001568504200021205102
+abstract C_0001568504200021205102 [[classState.html{State}]] {
++~State() = default : void [[[{~State}]]]
+..
+{abstract} +execute() = 0 : void [[[{execute}]]]
+__
+}
+class "StateMachine" as C_0000809888631143004801
+class C_0000809888631143004801 [[classStateMachine.html{StateMachine}]] {
++StateMachine(std::shared_ptr<State> initialState) : void [[[{StateMachine}]]]
+..
++run() : void [[[{run}]]]
++setState(std::shared_ptr<State> state) : void [[[{setState}]]]
+__
+-currentState_ : std::shared_ptr<State> [[[{currentState_}]]]
+}
+enum "StateMachine::StateType" as C_0000165730520787133096
+enum C_0000165730520787133096 [[enumStateMachine##StateType.html{StateMachine##StateType}]] {
+GetQuote
+Exit
+GetHistory
+Backup
+Restore
+}
+class "GetQuoteState" as C_0000767830389004106606
+class C_0000767830389004106606 [[classGetQuoteState.html{GetQuoteState}]] {
++GetQuoteState() : void [[[{GetQuoteState}]]]
+..
++execute() : void [[[{execute}]]]
+__
+-emotion : std::string [[[{emotion}]]]
+-line : std::string [[[{line}]]]
+-quote : std::string [[[{quote}]]]
+-quoteManager_ : QuoteManager & [[[{quoteManager_}]]]
+-wordDetector_ : WordDetector & [[[{wordDetector_}]]]
+}
+class "GetHistoryState" as C_0000227976704647291789
+class C_0000227976704647291789 [[classGetHistoryState.html{GetHistoryState}]] {
++GetHistoryState() : void [[[{GetHistoryState}]]]
+..
++execute() : void [[[{execute}]]]
+__
+-quoteManager_ : QuoteManager & [[[{quoteManager_}]]]
+}
+class "BackupState" as C_0000241620399623565482
+class C_0000241620399623565482 [[classBackupState.html{BackupState}]] {
++execute() : void [[[{execute}]]]
+__
+-caretaker : Caretaker [[[{caretaker}]]]
+}
+class "RestoreState" as C_0001109299336978540532
+class C_0001109299336978540532 [[classRestoreState.html{RestoreState}]] {
++execute() : void [[[{execute}]]]
+__
+-caretaker : Caretaker [[[{caretaker}]]]
+}
+class "ExitState" as C_0000701703073963245770
+class C_0000701703073963245770 [[classExitState.html{ExitState}]] {
++execute() : void [[[{execute}]]]
+__
+}
+}
+package [UserSpace] as C_0001658485430117366735 {
+abstract "Handler" as C_0001327288797420366778
+abstract C_0001327288797420366778 [[classHandler.html{Handler}]] {
++~Handler() = default : void [[[{~Handler}]]]
+..
+{abstract} +handleRequest(const std::string & str) = 0 : bool [[[{handleRequest}]]]
+{abstract} +setSuccessor(std::shared_ptr<Handler> next) = 0 : void [[[{setSuccessor}]]]
+__
+}
+class "PasswordLengthHandler" as C_0000926744485612842117
+class C_0000926744485612842117 [[classPasswordLengthHandler.html{PasswordLengthHandler}]] {
++handleRequest(const std::string & str) : bool [[[{handleRequest}]]]
++setSuccessor(std::shared_ptr<Handler> next) : void [[[{setSuccessor}]]]
+__
+-successor_ : std::shared_ptr<Handler> [[[{successor_}]]]
+}
+class "PasswordDigitHandler" as C_0001915182437812341083
+class C_0001915182437812341083 [[classPasswordDigitHandler.html{PasswordDigitHandler}]] {
++handleRequest(const std::string & str) : bool [[[{handleRequest}]]]
++setSuccessor(std::shared_ptr<Handler> next) : void [[[{setSuccessor}]]]
+__
+-successor_ : std::shared_ptr<Handler> [[[{successor_}]]]
+}
+class "PasswordSpecialCharHandler" as C_0001547948083618539243
+class C_0001547948083618539243 [[classPasswordSpecialCharHandler.html{PasswordSpecialCharHandler}]] {
++handleRequest(const std::string & str) : bool [[[{handleRequest}]]]
++setSuccessor(std::shared_ptr<Handler> next) : void [[[{setSuccessor}]]]
+__
+-successor_ : std::shared_ptr<Handler> [[[{successor_}]]]
+}
+abstract "Request" as C_0000544298380591634722
+abstract C_0000544298380591634722 [[classRequest.html{Request}]] {
+{abstract} +handleRequest() = 0 : bool [[[{handleRequest}]]]
+__
+}
+class "RequestFactory" as C_0000765520116889686140
+class C_0000765520116889686140 [[classRequestFactory.html{RequestFactory}]] {
+{static} +createRequest(RequestType type, std::map<std::string,std::string> & users) : std::shared_ptr<Request> [[[{createRequest}]]]
+__
+}
+enum "RequestFactory::RequestType" as C_0000488195957427833052
+enum C_0000488195957427833052 [[enumRequestFactory##RequestType.html{RequestFactory##RequestType}]] {
+CREATE_PASSWORD
+VERIFY_PASSWORD
+}
+class "PasswordCreationRequest" as C_0001202719384412558224
+class C_0001202719384412558224 [[classPasswordCreationRequest.html{PasswordCreationRequest}]] {
++PasswordCreationRequest(std::map<std::string,std::string> & users) : void [[[{PasswordCreationRequest}]]]
+..
++handleRequest() : bool [[[{handleRequest}]]]
+__
+-handlers_ : std::vector<std::shared_ptr<Handler>> [[[{handlers_}]]]
+-users_ : std::map<std::string,std::string> & [[[{users_}]]]
+}
+class "PasswordVerificationRequest" as C_0000581188225568213607
+class C_0000581188225568213607 [[classPasswordVerificationRequest.html{PasswordVerificationRequest}]] {
++PasswordVerificationRequest(std::map<std::string,std::string> & users) : void [[[{PasswordVerificationRequest}]]]
+..
++handleRequest() : bool [[[{handleRequest}]]]
+__
+-users_ : std::map<std::string,std::string> & [[[{users_}]]]
+}
+class "UserManager" as C_0001492504959217204985
+class C_0001492504959217204985 [[classUserManager.html{UserManager}]] {
++UserManager() : void [[[{UserManager}]]]
+..
++createUser() : bool [[[{createUser}]]]
++isUsersEmpty() : bool [[[{isUsersEmpty}]]]
+-loadUsers() : void [[[{loadUsers}]]]
+-saveUsers() : void [[[{saveUsers}]]]
++verifyUser() : bool [[[{verifyUser}]]]
+__
+-createRequest : std::shared_ptr<Request> [[[{createRequest}]]]
+-filesManager_ : FilesManager [[[{filesManager_}]]]
+-users_ : std::map<std::string,std::string> [[[{users_}]]]
+-verifyRequest : std::shared_ptr<Request> [[[{verifyRequest}]]]
+}
+}
+}
+C_0000106775899698471070 <|-- C_0000985390514549420001
+C_0000209334664465276570 o-- C_0000106775899698471070 : -parseStrategy_
+C_0001762709798774898242 <|-- C_0000209334664465276570
+C_0000106775899698471070 <|-- C_0001366781052303509844
+C_0000941663537070951489 o-- C_0000106775899698471070 : -parseStrategy_
+C_0001762709798774898242 <|-- C_0000941663537070951489
+C_0000362978639096402652 ..> C_0001762709798774898242
+C_0001739866015142771395 --+ C_0000362978639096402652
+C_0000951998978134492581 --> C_0001762709798774898242 : -manager_
+C_0002087532763571426051 o-- C_0000951998978134492581 : -filesManager_
+C_0001438220128157988994 o-- C_0000951998978134492581 : -filesManager_
+C_0001841076516654256738 o-- C_0001705914021101036153 : -memento_
+C_0001841076516654256738 o-- C_0000951998978134492581 : -filesManager_
+C_0001841076516654256738 --> C_0002087532763571426051 : -quoteManager_
+C_0000809888631143004801 --> C_0001568504200021205102 : -currentState_
+C_0000165730520787133096 --+ C_0000809888631143004801
+C_0000767830389004106606 --> C_0002087532763571426051 : -quoteManager_
+C_0000767830389004106606 --> C_0001438220128157988994 : -wordDetector_
+C_0001568504200021205102 <|-- C_0000767830389004106606
+C_0000227976704647291789 --> C_0002087532763571426051 : -quoteManager_
+C_0001568504200021205102 <|-- C_0000227976704647291789
+C_0000241620399623565482 o-- C_0001841076516654256738 : -caretaker
+C_0001568504200021205102 <|-- C_0000241620399623565482
+C_0001109299336978540532 o-- C_0001841076516654256738 : -caretaker
+C_0001568504200021205102 <|-- C_0001109299336978540532
+C_0001568504200021205102 <|-- C_0000701703073963245770
+C_0000926744485612842117 --> C_0001327288797420366778 : -successor_
+C_0001327288797420366778 <|-- C_0000926744485612842117
+C_0001915182437812341083 --> C_0001327288797420366778 : -successor_
+C_0001327288797420366778 <|-- C_0001915182437812341083
+C_0001547948083618539243 --> C_0001327288797420366778 : -successor_
+C_0001327288797420366778 <|-- C_0001547948083618539243
+C_0000765520116889686140 ..> C_0000544298380591634722
+C_0000488195957427833052 --+ C_0000765520116889686140
+C_0001202719384412558224 o-- C_0001327288797420366778 : -handlers_
+C_0000544298380591634722 <|-- C_0001202719384412558224
+C_0000544298380591634722 <|-- C_0000581188225568213607
+C_0001492504959217204985 o-- C_0000951998978134492581 : -filesManager_
+C_0001492504959217204985 --> C_0000544298380591634722 : -createRequest
+C_0001492504959217204985 --> C_0000544298380591634722 : -verifyRequest
+
+'Generated with clang-uml, version 0.5.2
+'LLVM version clang version 18.1.1 (https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a)
+@enduml
