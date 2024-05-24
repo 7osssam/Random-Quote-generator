@@ -5,11 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "../inc/Backup.hpp"
-#include "../inc/CSVManager.hpp"
-#include "../inc/FileManagerFactory.hpp"
-#include "../inc/FilesManager.hpp"
-#include "../inc/QuoteManager.hpp"
 #include "../inc/StateMachine.hpp"
 #include "../inc/init.hpp"
 #include "../inc/UserManager.hpp"
@@ -67,6 +62,7 @@ StateType HandleInput(UserManager& userManager)
 		case 2:
 			return StateType::Exit;
 		case 3:
+			std::cout << "History\n";
 			return StateType::GetHistory;
 		case 4:
 			if (userManager.verifyUser())
@@ -95,7 +91,7 @@ StateType HandleInput(UserManager& userManager)
 	}
 }
 
-int main()
+int main(void)
 {
 	if (systemInit() == EXIT_FAILURE)
 	{
@@ -105,7 +101,6 @@ int main()
 	UserManager userManager;
 	if (userManager.isUsersEmpty())
 	{
-		//std::cout << "No users found. Creating a new user.\n";
 		displayInfo("No users found. Creating a new user.");
 		userManager.createUser();
 	}
