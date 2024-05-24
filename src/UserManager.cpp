@@ -1,6 +1,7 @@
 #include "../inc/UserManager.hpp"
 
-#define MAX_TRIES 3
+#define MAX_TRIES  3
+#define USERS_FILE "../data/users.csv"
 
 /**
  * @brief Generates a SHA-224 hash of the given string.
@@ -112,10 +113,10 @@ std::shared_ptr<Request> RequestFactory::createRequest(RequestType						   type,
 
 void UserManager::loadUsers()
 {
-	filesManager.loadFile(FileManagerFactory::FileType::CSV, USERS_FILE);
+	filesManager_.loadFile(USERS_FILE);
 
-	auto users = filesManager.getData(FileManagerFactory::FileType::CSV, USERS_FILE, "username");
-	auto passwords = filesManager.getData(FileManagerFactory::FileType::CSV, USERS_FILE, "passwd");
+	auto users = filesManager_.getData(USERS_FILE, "username");
+	auto passwords = filesManager_.getData(USERS_FILE, "passwd");
 
 	for (size_t i = 0; i < users.size(); i++)
 	{
@@ -135,14 +136,14 @@ void UserManager::saveUsers()
 		passwords.push_back(user.second);
 	}
 
-	filesManager.setData(FileManagerFactory::FileType::CSV, USERS_FILE, "username", usernames);
-	filesManager.setData(FileManagerFactory::FileType::CSV, USERS_FILE, "passwd", passwords);
+	filesManager_.setData(USERS_FILE, "username", usernames);
+	filesManager_.setData(USERS_FILE, "passwd", passwords);
 
 	// save file
-	filesManager.saveFile(FileManagerFactory::FileType::CSV, USERS_FILE);
+	filesManager_.saveFile(USERS_FILE);
 }
 
-UserManager::UserManager() : csvManager_(CSVManager::getInstance())
+UserManager::UserManager() : filesManager_(FileManagerFactory::FileType::CSV)
 {
 	loadUsers();
 }

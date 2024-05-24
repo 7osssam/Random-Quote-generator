@@ -10,16 +10,14 @@
 #include <map>
 #include <algorithm>
 
-#include "CSVManager.hpp"
-#include "filesManager.hpp"
-
-#define USERS_FILE "../data/users.csv"
+#include "FilesManager.hpp"
 
 // =================================================================================================
 
 class Handler
 {
 public:
+	virtual ~Handler() = default;
 	virtual void setSuccessor(std::shared_ptr<Handler> next) = 0;
 	virtual bool handleRequest(const std::string& str) = 0;
 };
@@ -166,8 +164,7 @@ public:
 class UserManager
 {
 private:
-	FilesManager					   filesManager;
-	CSVManager&						   csvManager_;
+	FilesManager					   filesManager_;
 	std::map<std::string, std::string> users;
 	std::shared_ptr<Request>		   createRequest;
 	std::shared_ptr<Request>		   verifyRequest;
