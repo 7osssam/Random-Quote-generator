@@ -1,0 +1,59 @@
+add_compile_flags:
+  - --target=x86_64-w64-mingw32
+  - -fparse-all-comments
+  - -Wno-unknown-warning-option
+  - -DUSE_THREADS_POSIX
+
+# Change to directory where compile_commands.json is
+compilation_database_dir: ./build
+# Change to directory where diagram should be written
+output_directory: diagrams
+diagrams:
+  FilesManager_class_diagram:
+    type: class
+    title: This Diagram shows the relationship between all File Managers and its components
+    glob:
+      - src/FileManagers/*.cpp
+      - inc/FileManagers/*.hpp
+    using_namespace:
+      - myproject
+    #include:
+    generate_packages: true
+    package_type: directory
+    exclude:
+      namespaces:
+        - std 
+      paths:
+        - lib/
+  system_class_diagram:
+    type: class
+    title: This Diagram shows the relationship between all system components
+    glob:
+      - src/*.cpp
+      - inc/*.hpp
+    using_namespace:
+      - myproject
+    #include:
+    generate_packages: true
+    package_type: directory
+    exclude:
+      namespaces:
+        - std 
+      paths:
+        - lib/
+
+  include_diagram:
+    # Type of diagram (has to be `sequence`)
+    type: include
+
+    # Exclude calls to/from `std` namespace
+    exclude:
+      namespaces:
+        - std
+    include:
+      paths:
+        - src
+        - inc
+    #generate_system_headers: true
+    #from:
+      #- function: "saveFile(const std::string& filename)"
