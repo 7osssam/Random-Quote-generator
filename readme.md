@@ -30,6 +30,7 @@ Commands:
 ## UML Diagram
 ![UML Diagram](./docs/diagrams/system_class_diagram.svg)
 
+Diagrams for each system component can be found in the `docs/diagrams` folder
 
 ## TODO
 - Create Logger library to log the program's output either to a file or to the console 
