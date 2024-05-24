@@ -5,51 +5,17 @@
 #include <string>
 #include <vector>
 
-#include "../inc/StateMachine.hpp"
-#include "../inc/init.hpp"
-#include "../inc/UserManager.hpp"
+#include "StateMachine.hpp"
+#include "SystemMenu.hpp"
+#include "UserManager.hpp"
 
-void displayMenu()
-{
-	std::cout << "\n";
-	std::cout << "====================================\n";
-	std::cout << "|          Quote Manager           |\n";
-	std::cout << "====================================\n";
-	std::cout << "|                                  |\n";
-	std::cout << "|   What do you want to do?        |\n";
-	std::cout << "|                                  |\n";
-	std::cout << "|   1. Get a quote                 |\n";
-	std::cout << "|   2. Exit                        |\n";
-	std::cout << "|   3. Get History                 |\n";
-	std::cout << "|   4. Backup                      |\n";
-	std::cout << "|   5. Restore                     |\n";
-	std::cout << "|                                  |\n";
-	std::cout << "====================================\n";
-	std::cout << "\n";
-}
-
-void displayError(const std::string& message)
-{
-	system("echo \033[31m");
-	std::cerr << message << std::endl;
-	system("echo \033[0m");
-}
-
-void displaySuccess(const std::string& message)
-{
-	system("echo \033[32m");
-	std::cout << message << std::endl;
-	system("echo \033[0m");
-}
-
-void displayInfo(const std::string& message)
-{
-	system("echo \033[33m");
-	std::cout << message << std::endl;
-	system("echo \033[0m");
-}
-
-StateType HandleInput(UserManager& userManager)
+/**
+ * @brief Handles user input and returns the corresponding state of the state machine.
+ * 
+ * @param userManager The user manager object.
+ * @return The state of the state machine based on user input.
+ */
+StateMachine::StateType HandleInput(UserManager& userManager)
 {
 	displayMenu();
 	int input;
@@ -58,36 +24,35 @@ StateType HandleInput(UserManager& userManager)
 	switch (input)
 	{
 		case 1:
-			return StateType::GetQuote;
+			return StateMachine::StateType::GetQuote;
 		case 2:
-			return StateType::Exit;
+			return StateMachine::StateType::Exit;
 		case 3:
-			std::cout << "History\n";
-			return StateType::GetHistory;
+			return StateMachine::StateType::GetHistory;
 		case 4:
 			if (userManager.verifyUser())
 			{
-				return StateType::Backup;
+				return StateMachine::StateType::Backup;
 			}
 			else
 			{
 				displayError("Password verification failed.");
-				return HandleInput(userManager);
+				return HandleInput(userManager); // Recursively call HandleInput to get a valid choice
 			}
 		case 5:
 			if (userManager.verifyUser())
 			{
-				return StateType::Restore;
+				return StateMachine::StateType::Restore;
 			}
 			else
 			{
 				displayError("Password verification failed.");
-				return HandleInput(userManager);
+				return HandleInput(userManager); // Recursively call HandleInput to get a valid choice
 			}
 		default:
 			displayError("Invalid choice. Please try again.");
 			std::cin.clear();
-			return HandleInput(userManager);
+			return HandleInput(userManager); // Recursively call HandleInput to get a valid choice
 	}
 }
 
@@ -99,15 +64,21 @@ int main(void)
 	}
 
 	UserManager userManager;
-	if (userManager.isUsersEmpty())
+	bool		isUsersFileEmpty = userManager.isUsersEmpty();
+	// Check if the users file is empty
+	if (isUsersFileEmpty == true)
 	{
-		displayInfo("No users found. Creating a new user.");
-		userManager.createUser();
+		displayInfo("Creating a new user.");
+		userManager.createUser(); // Create a new user
 	}
-	else if (!userManager.verifyUser())
+	else
 	{
-		displayError("Password verification failed.");
-		return EXIT_FAILURE;
+		displayInfo("User found, please Enter username and password to verify.");
+		if (!userManager.verifyUser()) // Verify the user's password
+		{
+			displayError("Password verification failed.");
+			return EXIT_FAILURE;	   // Exit the program if password verification fails
+		}
 	}
 
 	std::shared_ptr<StateMachine> stateMachine =
@@ -115,23 +86,23 @@ int main(void)
 
 	while (true)
 	{
-		StateType choice = HandleInput(userManager);
+		StateMachine::StateType choice = HandleInput(userManager);
 
 		switch (choice)
 		{
-			case StateType::GetQuote:
+			case StateMachine::StateType::GetQuote:
 				stateMachine->setState(std::make_shared<GetQuoteState>());
 				break;
-			case StateType::Exit:
+			case StateMachine::StateType::Exit:
 				stateMachine->setState(std::make_shared<ExitState>());
 				break;
-			case StateType::GetHistory:
+			case StateMachine::StateType::GetHistory:
 				stateMachine->setState(std::make_shared<GetHistoryState>());
 				break;
-			case StateType::Backup:
+			case StateMachine::StateType::Backup:
 				stateMachine->setState(std::make_shared<BackupState>());
 				break;
-			case StateType::Restore:
+			case StateMachine::StateType::Restore:
 				stateMachine->setState(std::make_shared<RestoreState>());
 				break;
 
