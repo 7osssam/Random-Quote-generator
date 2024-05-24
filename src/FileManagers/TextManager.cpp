@@ -1,4 +1,4 @@
-#include "../inc/TextManager.hpp"
+#include "TextManager.hpp"
 
 std::vector<std::string> TextParseStrategy::parse(const std::string& line)
 {
