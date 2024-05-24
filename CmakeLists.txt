@@ -20,15 +20,21 @@ include_directories(${PROJECT_SOURCE_DIR}/inc/utils)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 
+# Set the output directory
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
 # Add the executable
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_executable(RandomQuoteGenerator ${SOURCES})
 
-# Add compiler flags
-add_compile_options(-Wall -static-libstdc++)
 
+# add docs directory for doxygen
+add_subdirectory(docs)
+
+
+# ===========================================
+# 		OpenSSL Configuration
+# ===========================================
 # Set the path to OpenSSL installation
 set(OPENSSL_ROOT_DIR "${PROJECT_SOURCE_DIR}/lib/OpenSSL/3.3.0")
 
