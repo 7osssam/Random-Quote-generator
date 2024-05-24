@@ -7,110 +7,94 @@
 #include <vector>
 
 #include "Backup.hpp"
-#include "CSVManager.hpp"
 #include "QuoteManager.hpp"
-
+#include "WordDetector.hpp"
 
 // Abstract base class for states
 class State
 {
 public:
-    virtual ~State() = default;
-    virtual void execute() = 0;
+	virtual ~State() = default;
+	virtual void execute() = 0;
 };
 
 // Enum for representing different states
 enum class StateType
 {
-    GetQuote,
-    Exit,
-    GetHistory,
-    Backup,
-    Restore
+	GetQuote,
+	Exit,
+	GetHistory,
+	Backup,
+	Restore
 };
 
 // State machine class to manage states
 class StateMachine
 {
 private:
-    std::shared_ptr<State> currentState_;
+	std::shared_ptr<State> currentState_;
 
 public:
-    StateMachine(std::shared_ptr<State> initialState) : currentState_(initialState)
-    {
-    }
+	StateMachine(std::shared_ptr<State> initialState);
 
-    void setState(std::shared_ptr<State> state);
+	void setState(std::shared_ptr<State> state);
 
-    void run();
+	void run();
 };
 
 // Concrete state classes
 class GetQuoteState : public State
 {
 private:
-    std::string line{};
-    std::string quote{};
-    std::string emotion{};
-    QuoteManager &quoteManager_;
-    WordDetector &wordDetector_;
-
+	std::string	  line{};
+	std::string	  quote{};
+	std::string	  emotion{};
+	QuoteManager& quoteManager_;
+	WordDetector& wordDetector_;
 
 public:
-    GetQuoteState()
-        : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance())),
-          wordDetector_(WordDetector::getInstance(CSVManager::getInstance()))
-    {
-    }
+	GetQuoteState();
 
-    void execute() override;
+	void execute() override;
 };
 
 class GetHistoryState : public State
 {
 private:
-    QuoteManager &quoteManager_;
+	QuoteManager& quoteManager_;
 
 public:
-    GetHistoryState() : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance()))
-    {
-    }
+	GetHistoryState();
 
-    void execute() override;
+	void execute() override;
 };
 
 class BackupState : public State
 {
 private:
-    Caretaker caretaker;
-    QuoteManager &quoteManager_;
+	Caretaker caretaker;
 
 public:
-    BackupState() : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance()))
-    {
-    }
+	BackupState() = default;
 
-    void execute() override;
+	void execute() override;
 };
 
 class RestoreState : public State
 {
 private:
-    Caretaker caretaker;
-    QuoteManager &quoteManager_;
+	Caretaker caretaker;
 
 public:
-    RestoreState() : quoteManager_(QuoteManager::getInstance(CSVManager::getInstance()))
-    {
-    }
+	RestoreState() = default;
 
-    void execute() override;
+	void execute() override;
 };
 
 class ExitState : public State
 {
 public:
-    void execute() override;
+	void execute() override;
 };
 
 #endif // __STATEMACHINE_H__

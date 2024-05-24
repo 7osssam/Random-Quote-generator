@@ -2,12 +2,15 @@
 #include "../inc/QuoteManager.hpp"
 #include "../inc/init.hpp"
 
-#define HAPPY_WORDS "happy_words"
-#define SAD_WORDS "sad_words"
+#define HAPPY_WORDS	 "happy_words"
+#define SAD_WORDS	 "sad_words"
 
 #define HAPPY_QUOTES "happy_quotes"
-#define SAD_QUOTES "sad_quotes"
+#define SAD_QUOTES	 "sad_quotes"
 
+StateMachine::StateMachine(std::shared_ptr<State> initialState) : currentState_(initialState)
+{
+}
 
 /**
  * @brief Sets the current state of the StateMachine.
@@ -18,7 +21,7 @@
  */
 void StateMachine::setState(std::shared_ptr<State> state)
 {
-    currentState_ = state;
+	currentState_ = state;
 }
 
 /**
@@ -29,9 +32,13 @@ void StateMachine::setState(std::shared_ptr<State> state)
  */
 void StateMachine::run()
 {
-    currentState_->execute();
+	currentState_->execute();
 }
 
+GetQuoteState::GetQuoteState() :
+	quoteManager_(QuoteManager::getInstance()), wordDetector_(WordDetector::getInstance())
+{
+}
 /**
  * @brief Executes the GetQuoteState.
  * 
@@ -40,27 +47,31 @@ void StateMachine::run()
  */
 void GetQuoteState::execute()
 {
-    std::cout << "How are you feeling today?" << std::endl;
-    std::cin.ignore();
-    std::getline(std::cin, line);
+	std::cout << "How are you feeling today?" << std::endl;
+	std::cin.ignore();
+	std::getline(std::cin, line);
 
-    if (wordDetector_.containsWord(WORDS_FILE, HAPPY_WORDS, line))
-    {
-        std::cout << "You seem happy!" << std::endl;
-        emotion = SAD_QUOTES;
-    }
-    else if (wordDetector_.containsWord(WORDS_FILE, SAD_WORDS, line))
-    {
-        std::cout << "You seem sad." << std::endl;
-        emotion = HAPPY_QUOTES;
-    }
-    else
-    {
-        std::cout << "No specific emotion detected." << std::endl;
-    }
+	if (wordDetector_.containsWord(HAPPY_WORDS, line))
+	{
+		std::cout << "You seem happy!" << std::endl;
+		emotion = SAD_QUOTES;
+	}
+	else if (wordDetector_.containsWord(SAD_WORDS, line))
+	{
+		std::cout << "You seem sad." << std::endl;
+		emotion = HAPPY_QUOTES;
+	}
+	else
+	{
+		std::cout << "No specific emotion detected." << std::endl;
+	}
 
-    quote = quoteManager_.getRandomQuote(QUOTES_FILE, emotion);
-    std::cout << "Here is a quote for you: " << quote << std::endl;
+	quote = quoteManager_.getRandomQuote(emotion);
+	std::cout << "Here is a quote for you: " << quote << std::endl;
+}
+
+GetHistoryState::GetHistoryState() : quoteManager_(QuoteManager::getInstance())
+{
 }
 
 /**
@@ -70,10 +81,10 @@ void GetQuoteState::execute()
  */
 void GetHistoryState::execute()
 {
-    for (const auto &historyQuote : quoteManager_.getHistory())
-    {
-        std::cout << historyQuote << std::endl;
-    }
+	for (const auto& historyQuote: quoteManager_.getHistory())
+	{
+		std::cout << historyQuote << std::endl;
+	}
 }
 
 /**
@@ -86,7 +97,8 @@ void GetHistoryState::execute()
  */
 void BackupState::execute()
 {
-    caretaker.backup(quoteManager_);
+	caretaker.backup();
+	std::cout << "Backup completed successfully." << std::endl;
 }
 
 /**
@@ -97,7 +109,14 @@ void BackupState::execute()
  */
 void RestoreState::execute()
 {
-    caretaker.restore(quoteManager_);
+	if (caretaker.restore())
+	{
+		std::cout << "Restore completed successfully." << std::endl;
+	}
+	else
+	{
+		std::cout << "Restore failed." << std::endl;
+	}
 }
 
 /**
@@ -107,5 +126,5 @@ void RestoreState::execute()
  */
 void ExitState::execute()
 {
-    exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
