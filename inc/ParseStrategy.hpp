@@ -13,12 +13,12 @@
 class ParseStrategy
 {
 public:
-    /**
+	/**
 	 * @brief Virtual destructor for ParseStrategy.
 	 */
-    virtual ~ParseStrategy() = default;
+	virtual ~ParseStrategy() = default;
 
-    /**
+	/**
 	 * @brief Parses a line of text and returns a vector of strings.
 	 * 
 	 * This pure virtual function should be implemented by subclasses to define their specific parsing algorithm.
@@ -26,7 +26,7 @@ public:
 	 * @param line The line of text to be parsed.
 	 * @return std::vector<std::string> A vector of strings extracted from the line.
 	 */
-    virtual std::vector<std::string> parse(const std::string &line) = 0;
+	virtual std::vector<std::string> parse(const std::string& line) = 0;
 };
 
 #endif // __PARSESTRATEGY_H__
