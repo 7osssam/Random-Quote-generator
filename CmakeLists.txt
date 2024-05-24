@@ -1,26 +1,32 @@
 cmake_minimum_required(VERSION 3.25)
 
-# set the project name
+# Set the project name
 project(RandomQuoteGenerator)
 
-# specify the C++ standard
+# Specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-# set compiler flags
+# Set compiler flags
 set(CMAKE_CXX_FLAGS "-Wall -static-libstdc++")
 
-# include directories
+# Include directories
 include_directories(${PROJECT_SOURCE_DIR}/inc)
+include_directories(${PROJECT_SOURCE_DIR}/inc/SystemBackup)
+include_directories(${PROJECT_SOURCE_DIR}/inc/FileManagers)
+include_directories(${PROJECT_SOURCE_DIR}/inc/State)
+include_directories(${PROJECT_SOURCE_DIR}/inc/UserSpace)
+include_directories(${PROJECT_SOURCE_DIR}/inc/utils)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # Generate compile_commands.json
+# Generate compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
-# add the executable
-file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
+# Add the executable
+file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_executable(RandomQuoteGenerator ${SOURCES})
 
-# add compiler flags
+# Add compiler flags
 add_compile_options(-Wall -static-libstdc++)
 
 # Set the path to OpenSSL installation
