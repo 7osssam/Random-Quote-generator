@@ -20,7 +20,7 @@ run:
 		exit 1; \
 	fi
 	@echo -e "$(COLOR_GREEN)======== Running the project... ========$(COLOR_RESET)"
-	cd build/ && ./PROJECT_NAME
+	cd build/ && ./$(PROJECT_NAME)
 
 clean:
 	@echo -e "$(COLOR_RED)======== Cleaning the build directory... ========$(COLOR_RESET)"
