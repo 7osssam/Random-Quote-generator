@@ -1,4 +1,4 @@
-#include "../inc/CSVManager.hpp"
+#include "CSVManager.hpp"
 
 std::vector<std::string> CSVParseStrategy::parse(const std::string& line)
 {
