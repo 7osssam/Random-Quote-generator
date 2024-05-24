@@ -5,7 +5,14 @@
 #include "QuoteManager.hpp"
 #include <vector>
 
-// Memento class
+/**
+ * @class Memento
+ * @brief The Memento class represents a snapshot of the historical state of an object.
+ * 
+ * The Memento class stores a history of the object's state in the form of a vector of strings.
+ * It provides methods to construct a new Memento object with a given history, and to retrieve
+ * the stored history.
+ */
 class Memento
 {
 private:
@@ -31,7 +38,14 @@ public:
 	std::vector<std::string> getHistory() const;
 };
 
-// Caretaker class
+/**
+ * @class Caretaker
+ * @brief The Caretaker class is responsible for managing the Memento object.
+ * 
+ * The Caretaker class is responsible for creating and managing the Memento object.
+ * It provides functionality to create a backup of the quote history and restore
+ * the state of the object to a previous state using the Memento object.
+ */
 class Caretaker
 {
 private:
