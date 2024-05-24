@@ -2,22 +2,77 @@ add_compile_flags:
   - --target=x86_64-w64-mingw32
   - -fparse-all-comments
   - -Wno-unknown-warning-option
-  - -DUSE_THREADS_POSIX
-
+  - -DUSE_THREADS_POSIX 
+remove_compile_flags:  
+  - -Wunused-command-line-argument
 # Change to directory where compile_commands.json is
 compilation_database_dir: ./build
 # Change to directory where diagram should be written
-output_directory: diagrams
+output_directory: ./docs/diagrams
 diagrams:
-  FilesManager_class_diagram:
+  FileManagers_class_diagram:
     type: class
-    title: This Diagram shows the relationship between all File Managers and its components
+    title: This Diagram shows the relationship between FileManagers components
     glob:
       - src/FileManagers/*.cpp
       - inc/FileManagers/*.hpp
-    using_namespace:
-      - myproject
-    #include:
+    include:
+      paths:
+        - src/FileManagers/
+        - inc/FileManagers/
+    generate_packages: true
+    package_type: directory
+    exclude:
+      namespaces:
+        - std 
+      paths:
+        - lib/
+  State_class_diagram:
+    type: class
+    title: This Diagram shows the relationship between State Machine components
+    glob:
+      - src/State/*.cpp
+      - inc/State/*.hpp
+    include:
+      paths:
+        - src/State/
+        - inc/State/
+    generate_packages: true
+    package_type: directory
+    exclude:
+      namespaces:
+        - std 
+      paths:
+        - lib/
+  SystemBackup_class_diagram:
+    type: class
+    title: This Diagram shows the relationship between System Backup Machine components
+    glob:
+      - src/SystemBackup/*.cpp
+      - inc/SystemBackup/*.hpp
+    include:
+      paths:
+        - src/SystemBackup/
+        - inc/SystemBackup/
+        - src/utils/
+        - inc/utils/
+    generate_packages: true
+    package_type: directory
+    exclude:
+      namespaces:
+        - std 
+      paths:
+        - lib/
+  UserSpace_class_diagram:
+    type: class
+    title: This Diagram shows the relationship between User Space components
+    glob:
+      - src/UserSpace/*.cpp
+      - inc/UserSpace/*.hpp
+    include:
+      paths:
+        - src/UserSpace/
+        - inc/UserSpace/
     generate_packages: true
     package_type: directory
     exclude:
@@ -31,9 +86,10 @@ diagrams:
     glob:
       - src/*.cpp
       - inc/*.hpp
-    using_namespace:
-      - myproject
-    #include:
+    include:
+        paths:
+        - src/
+        - inc/
     generate_packages: true
     package_type: directory
     exclude:
@@ -41,11 +97,28 @@ diagrams:
         - std 
       paths:
         - lib/
-
+    generate_links:
+      link: "{% if existsIn(element, \"doxygen_link\") %}{{ element.doxygen_link }}{% endif %}"
+      tooltip: "{% if existsIn(element, \"comment\") and existsIn(element.comment, \"brief\") %}{{ abbrv(trim(replace(element.comment.brief.0, \"\\n+\", \" \")), 256) }}{% else %}{{ element.name }}{% endif %}"
+  Utils_class_diagram:
+    type: class
+    title: This Diagram shows the relationship between Utils components
+    glob:
+      - src/utils/*.cpp
+      - inc/utils/*.hpp
+    include:
+      paths:
+        - src/utils/
+        - inc/utils/
+    generate_packages: true
+    package_type: directory
+    exclude:
+      namespaces:
+        - std 
+      paths:
+        - lib/
   include_diagram:
-    # Type of diagram (has to be `sequence`)
     type: include
-
     # Exclude calls to/from `std` namespace
     exclude:
       namespaces:
@@ -54,6 +127,17 @@ diagrams:
       paths:
         - src
         - inc
-    #generate_system_headers: true
-    #from:
-      #- function: "saveFile(const std::string& filename)"
+  sequence_diagram:
+    type: sequence
+    glob:
+      - src/*.cpp
+      - inc/*.hpp
+    include:
+      paths:
+        - src/
+        - inc/
+    exclude:
+      namespaces:
+        - std
+    start_from:
+      - function: "main"
