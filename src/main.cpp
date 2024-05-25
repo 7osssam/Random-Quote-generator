@@ -26,10 +26,9 @@ StateMachine::StateType HandleInput(UserManager& userManager)
 		case 1:
 			return StateMachine::StateType::GetQuote;
 		case 2:
-			return StateMachine::StateType::Exit;
-		case 3:
 			return StateMachine::StateType::GetHistory;
-		case 4:
+
+		case 3:
 			if (userManager.verifyUser())
 			{
 				return StateMachine::StateType::Backup;
@@ -39,7 +38,8 @@ StateMachine::StateType HandleInput(UserManager& userManager)
 				displayError("Password verification failed.");
 				return HandleInput(userManager); // Recursively call HandleInput to get a valid choice
 			}
-		case 5:
+		case 4:
+
 			if (userManager.verifyUser())
 			{
 				return StateMachine::StateType::Restore;
@@ -49,6 +49,8 @@ StateMachine::StateType HandleInput(UserManager& userManager)
 				displayError("Password verification failed.");
 				return HandleInput(userManager); // Recursively call HandleInput to get a valid choice
 			}
+		case 5:
+			return StateMachine::StateType::Exit;
 		default:
 			displayError("Invalid choice. Please try again.");
 			std::cin.clear();
@@ -93,9 +95,6 @@ int main(void)
 			case StateMachine::StateType::GetQuote:
 				stateMachine->setState(std::make_shared<GetQuoteState>());
 				break;
-			case StateMachine::StateType::Exit:
-				stateMachine->setState(std::make_shared<ExitState>());
-				break;
 			case StateMachine::StateType::GetHistory:
 				stateMachine->setState(std::make_shared<GetHistoryState>());
 				break;
@@ -104,6 +103,9 @@ int main(void)
 				break;
 			case StateMachine::StateType::Restore:
 				stateMachine->setState(std::make_shared<RestoreState>());
+				break;
+			case StateMachine::StateType::Exit:
+				stateMachine->setState(std::make_shared<ExitState>());
 				break;
 
 			default:
