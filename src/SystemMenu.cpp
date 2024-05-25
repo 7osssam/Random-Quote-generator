@@ -48,10 +48,10 @@ void displayMenu(void)
 	std::cout << "|   What do you want to do?        |\n";
 	std::cout << "|                                  |\n";
 	std::cout << "|   1. Get a quote                 |\n";
-	std::cout << "|   2. Exit                        |\n";
-	std::cout << "|   3. Get History                 |\n";
-	std::cout << "|   4. Backup                      |\n";
-	std::cout << "|   5. Restore                     |\n";
+	std::cout << "|   2. Get History                 |\n";
+	std::cout << "|   3. Backup                      |\n";
+	std::cout << "|   4. Restore                     |\n";
+	std::cout << "|   5. Exit                        |\n";
 	std::cout << "|                                  |\n";
 	std::cout << "====================================\n";
 	std::cout << "\n";
