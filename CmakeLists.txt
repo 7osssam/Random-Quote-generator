@@ -27,10 +27,8 @@ set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTOR
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_executable(RandomQuoteGenerator ${SOURCES})
 
-
 # add docs directory for doxygen
 add_subdirectory(docs)
-
 
 # ===========================================
 # 		OpenSSL Configuration
@@ -42,9 +40,6 @@ set(OPENSSL_ROOT_DIR "${PROJECT_SOURCE_DIR}/lib/OpenSSL/3.3.0")
 set(OPENSSL_INCLUDE_DIR "${OPENSSL_ROOT_DIR}/include")
 set(OPENSSL_CRYPTO_LIBRARY "${OPENSSL_ROOT_DIR}/lib/libcrypto.lib")
 set(OPENSSL_SSL_LIBRARY "${OPENSSL_ROOT_DIR}/lib/libssl.lib")
-
-# Find OpenSSL
-find_package(OpenSSL REQUIRED)
 
 # Include OpenSSL directories
 include_directories(${OPENSSL_INCLUDE_DIR})
