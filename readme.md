@@ -12,6 +12,7 @@ with chain of responsibility pattern, the program will check for prequisites in 
 - State Machine
 - Chain of Responsibility
 - Facade
+- Memento
 
 
 ## How to run the program
