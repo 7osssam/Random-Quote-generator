@@ -1,5 +1,5 @@
 # Random Quote generator 
-This is a simple random quote generator that generates a random quote from a list of quotes, based on the user's input.
+This is a simple C++ random quote generator that generates a random quote from a list of quotes, based on the user's input.
 program will predict the user's mood based on the happyor sad words in the input and generate a quote accordingly (dummy prediction).
 
 User will be asked to create a user at the first run of the program. The user will be saved in a CSV file with hashed password (SHA224),
