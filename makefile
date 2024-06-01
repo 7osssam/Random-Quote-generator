@@ -16,7 +16,7 @@ build:
 	@echo -e "$(COLOR_YELLOW)======== Building the project... ========$(COLOR_RESET)"
 	mkdir -p build
 #	cd build/ && cmake .. -G "MinGW Makefiles" && make 
-	cmake -S . -B build -G "MinGW Makefiles"  && cmake --build build --config Release 
+	cmake -S . -B build  && cmake --build build --config Release 
 	@echo -e "$(COLOR_GREEN)======== Project built successfully! ========$(COLOR_RESET)"
 
 # run the project
